@@ -49,12 +49,7 @@ export default function Game({ selectedElement, setSelectedElement }: { selected
       {SHOW_DEBUG_UI && <DebugTimeManager timeManager={timeManager} width={200} height={100} />}
       <div className="mx-auto w-full h-full grid grid-rows-[1fr] lg:grid-cols-[1fr_auto] game-frame">
         {/* Game area */}
-        <div 
-          className={`relative overflow-hidden bg-brown-900 ${
-            helpModalOpen || charactersModalOpen ? 'pointer-events-none' : ''
-          }`} 
-          ref={gameWrapperRef}
-        >
+        <div className="relative overflow-hidden bg-brown-900" ref={gameWrapperRef}>
           <div className="absolute inset-0">
             <div className="container">
               <Stage width={width} height={height} options={{ backgroundColor: 0x7ab5ff }}>
