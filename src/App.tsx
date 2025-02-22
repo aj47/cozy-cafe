@@ -11,6 +11,7 @@ import Button from './components/buttons/Button.tsx';
 import InteractButton from './components/buttons/InteractButton.tsx';
 import FreezeButton from './components/FreezeButton.tsx';
 import CharactersView from './components/CharactersView';
+import { useJoinOrLeaveGame } from './hooks/useJoinOrLeaveGame';
 import { MAX_HUMAN_PLAYERS } from '../convex/constants.ts';
 
 export default function Home() {
@@ -68,8 +69,9 @@ export default function Home() {
         ariaHideApp={false}
       >
         <CharactersView
-          onCharacterSelect={(characterId: string) => {
-            setSelectedElement({ kind: 'player', id: characterId });
+          onCharacterSelect={() => {
+            const { joinOrLeaveGame } = useJoinOrLeaveGame();
+            joinOrLeaveGame();
             setCharactersModalOpen(false);
           }}
         />
