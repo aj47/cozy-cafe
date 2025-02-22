@@ -1,7 +1,7 @@
 import Game from './components/Game.tsx';
 
 import { ToastContainer } from 'react-toastify';
-import starImg from '../assets/star.svg';
+import characterIcon from '../assets/character.svg';
 import helpImg from '../assets/help.svg';
 // import { UserButton } from '@clerk/clerk-react';
 // import LoginButton from './components/buttons/LoginButton.tsx';
@@ -17,6 +17,7 @@ import { MAX_HUMAN_PLAYERS } from '../convex/constants.ts';
 export default function Home() {
   const [helpModalOpen, setHelpModalOpen] = useState(false);
   const [charactersModalOpen, setCharactersModalOpen] = useState(false);
+  const [selectedElement, setSelectedElement] = useState<{ kind: 'player'; id: string } | undefined>(undefined);
   return (
     <main className="relative flex h-screen flex-col items-center justify-between font-body game-background">
       <ReactModal
@@ -65,7 +66,10 @@ export default function Home() {
         contentLabel="Characters modal"
         ariaHideApp={false}
       >
-        <CharactersView />
+        <CharactersView onCharacterSelect={(characterId: string) => {
+          setSelectedElement({ kind: 'player', id: characterId });
+          setCharactersModalOpen(false);
+        }} />
       </ReactModal>
       {/*<div className="p-3 absolute top-0 right-0 z-10 text-2xl">
         <Authenticated>
@@ -92,12 +96,12 @@ export default function Home() {
         </div>
 
         <div className="flex-grow relative">
-          <Game />
+          <Game selectedElement={selectedElement} setSelectedElement={setSelectedElement} />
           <footer className="absolute justify-end bottom-0 left-0 w-full flex items-center gap-3 p-6 flex-wrap pointer-events-none">
             <div className="flex gap-4 flex-grow pointer-events-none">
               <FreezeButton />
               <MusicButton />
-              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={starImg}>
+              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={characterIcon}>
                 Characters
               </Button>
               <Button href="https://github.com/a16z-infra/cozy-cafe" imgUrl={starImg}>
@@ -129,7 +133,8 @@ const modalStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     maxWidth: '50%',
-
+    maxHeight: '80vh',
+    overflowY: 'auto',
     border: '10px solid rgb(23, 20, 33)',
     borderRadius: '0',
     background: 'rgb(35, 38, 58)',

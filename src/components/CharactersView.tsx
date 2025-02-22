@@ -1,7 +1,7 @@
 import React from 'react';
 import { characters, Descriptions } from '../../data/characters';
 
-export default function CharactersView() {
+export default function CharactersView({ onCharacterSelect }: { onCharacterSelect?: (characterId: string) => void }) {
   return (
     <div className="p-4">
       <h2 className="text-2xl mb-4">Characters List</h2>
@@ -21,7 +21,7 @@ export default function CharactersView() {
               (desc) => desc.character === char.name
             );
             return (
-              <tr key={char.name}>
+              <tr key={char.name} onClick={() => { onCharacterSelect && onCharacterSelect(char.name); }} style={{ cursor: 'pointer' }}>
                 <td className="border p-2">{char.name}</td>
                 <td className="border p-2">{char.textureUrl}</td>
                 <td className="border p-2">{char.speed}</td>

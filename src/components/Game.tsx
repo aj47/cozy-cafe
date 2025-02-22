@@ -15,12 +15,8 @@ import LoadingSpinner from './LoadingSpinner';
 
 export const SHOW_DEBUG_UI = !!import.meta.env.VITE_SHOW_DEBUG_UI;
 
-export default function Game() {
+export default function Game({ selectedElement, setSelectedElement }: { selectedElement?: { kind: 'player'; id: GameId<'players'> }, setSelectedElement: (sel: { kind: 'player'; id: GameId<'players'> } | undefined) => void }) {
   const convex = useConvex();
-  const [selectedElement, setSelectedElement] = useState<{
-    kind: 'player';
-    id: GameId<'players'>;
-  }>();
   const [gameWrapperRef, { width, height }] = useElementSize();
 
   const worldStatus = useQuery(api.world.defaultWorldStatus);
