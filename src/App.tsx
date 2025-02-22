@@ -11,10 +11,12 @@ import MusicButton from './components/buttons/MusicButton.tsx';
 import Button from './components/buttons/Button.tsx';
 import InteractButton from './components/buttons/InteractButton.tsx';
 import FreezeButton from './components/FreezeButton.tsx';
+import CharactersView from './components/CharactersView';
 import { MAX_HUMAN_PLAYERS } from '../convex/constants.ts';
 
 export default function Home() {
   const [helpModalOpen, setHelpModalOpen] = useState(false);
+  const [charactersModalOpen, setCharactersModalOpen] = useState(false);
   return (
     <main className="relative flex h-screen flex-col items-center justify-between font-body game-background">
       <ReactModal
@@ -56,6 +58,15 @@ export default function Home() {
           </p>
         </div>
       </ReactModal>
+      <ReactModal
+        isOpen={charactersModalOpen}
+        onRequestClose={() => setCharactersModalOpen(false)}
+        style={modalStyles}
+        contentLabel="Characters modal"
+        ariaHideApp={false}
+      >
+        <CharactersView />
+      </ReactModal>
       {/*<div className="p-3 absolute top-0 right-0 z-10 text-2xl">
         <Authenticated>
           <UserButton afterSignOutUrl="/ai-town" />
@@ -86,6 +97,9 @@ export default function Home() {
             <div className="flex gap-4 flex-grow pointer-events-none">
               <FreezeButton />
               <MusicButton />
+              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={starImg}>
+                Characters
+              </Button>
               <Button href="https://github.com/a16z-infra/cozy-cafe" imgUrl={starImg}>
                 Star
               </Button>
