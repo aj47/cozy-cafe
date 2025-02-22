@@ -31,7 +31,9 @@ export default function CharactersView({ onCharacterSelect }: { onCharacterSelec
                   height: `${frame.h}px`,
                   backgroundImage: `url(${char.textureUrl})`,
                   backgroundPosition: `-${frame.x}px -${frame.y}px`,
-                  backgroundSize: `${char.spritesheetData.meta.size.w}px ${char.spritesheetData.meta.size.h}px`,
+                  backgroundSize: char.spritesheetData.meta?.size
+                    ? `${char.spritesheetData.meta.size.w}px ${char.spritesheetData.meta.size.h}px`
+                    : 'contain',
                 }}
               />
               <h3 className="font-bold text-lg">{displayName}</h3>
