@@ -104,11 +104,8 @@ export default function Home() {
             <div className="flex gap-4 flex-grow pointer-events-none">
               <FreezeButton />
               <MusicButton />
-              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={starImg}>
+              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={helpImg}>
                 Characters
-              </Button>
-              <Button href="https://github.com/a16z-infra/cozy-cafe" imgUrl={starImg}>
-                Star
               </Button>
               <InteractButton />
               <Button imgUrl={helpImg} onClick={() => setHelpModalOpen(true)}>
