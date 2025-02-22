@@ -119,9 +119,27 @@ export const agentInputs = {
   createAgent: inputHandler({
     args: {
       descriptionIndex: v.number(),
+      userName: v.optional(v.string()),
+      userIdentity: v.optional(v.string()),
+      userPlan: v.optional(v.string()),
     },
     handler: (game, now, args) => {
-      const description = Descriptions[args.descriptionIndex];
+      let description;
+
+      if (args.descriptionIndex === -1) {
+        if (!args.userName || !args.userIdentity || !args.userPlan) {
+          throw new Error('Missing required user info for custom agent');
+        }
+        description = {
+          name: args.userName,
+          character: 'f2',
+          identity: args.userIdentity,
+          plan: args.userPlan,
+        };
+      } else {
+        description = Descriptions[args.descriptionIndex];
+      }
+
       const playerId = Player.join(
         game,
         now,
