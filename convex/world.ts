@@ -111,6 +111,9 @@ export const userStatus = query({
 export const joinWorld = mutation({
   args: {
     worldId: v.id('worlds'),
+    userName: v.optional(v.string()),
+    userIdentity: v.optional(v.string()),
+    userPlan: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     // const identity = await ctx.auth.getUserIdentity();
@@ -128,13 +131,21 @@ export const joinWorld = mutation({
     if (!world) {
       throw new ConvexError(`Invalid world ID: ${args.worldId}`);
     }
+
     // const { tokenIdentifier } = identity;
-    return await insertInput(ctx, world._id, 'join', {
-      name,
-      character: characters[Math.floor(Math.random() * characters.length)].name,
-      description: `${DEFAULT_NAME} is a human player`,
-      // description: `${identity.givenName} is a human player`,
-      tokenIdentifier: DEFAULT_NAME,
+    // return await insertInput(ctx, world._id, 'join', {
+    //   name,
+    //   character: characters[Math.floor(Math.random() * characters.length)].name,
+    //   description: `${DEFAULT_NAME} is a human player`,
+    //   // description: `${identity.givenName} is a human player`,
+    //   tokenIdentifier: DEFAULT_NAME,
+    // });
+
+    return await insertInput(ctx, world._id, 'createAgent', {
+      descriptionIndex: -1,
+      userName: args.userName,
+      userIdentity: args.userIdentity,
+      userPlan: args.userPlan,
     });
   },
 });

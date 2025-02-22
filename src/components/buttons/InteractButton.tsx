@@ -24,10 +24,10 @@ export default function InteractButton() {
 
   const convex = useConvex();
   const joinInput = useCallback(
-    async (worldId: Id<'worlds'>) => {
+    async (worldId: Id<'worlds'>, userName: string, userIdentity: string, userPlan: string) => {
       let inputId;
       try {
-        inputId = await join({ worldId });
+        inputId = await join({ worldId, userName, userIdentity, userPlan });
       } catch (e: any) {
         if (e instanceof ConvexError) {
           toast.error(e.data);
@@ -56,8 +56,13 @@ export default function InteractButton() {
       console.log(`Leaving game for player ${userPlayerId}`);
       void leave({ worldId });
     } else {
-      console.log(`Joining game`);
-      void joinInput(worldId);
+      const name = prompt('Enter your name:');
+      const identity = prompt('Enter your identity (describe who you are):');
+      const plan = prompt('Enter your plan (what do you want to achieve?):');
+      if (name && identity && plan) {
+        console.log(`Joining game as ${name}`);
+        joinInput(worldId, name, identity, plan);
+      }
     }
   };
   // if (!isAuthenticated || game === undefined) {
