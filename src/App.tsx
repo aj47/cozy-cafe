@@ -1,7 +1,6 @@
 import Game from './components/Game.tsx';
 
 import { ToastContainer } from 'react-toastify';
-import characterIcon from '../assets/character.svg';
 import helpImg from '../assets/help.svg';
 // import { UserButton } from '@clerk/clerk-react';
 // import LoginButton from './components/buttons/LoginButton.tsx';
@@ -17,7 +16,9 @@ import { MAX_HUMAN_PLAYERS } from '../convex/constants.ts';
 export default function Home() {
   const [helpModalOpen, setHelpModalOpen] = useState(false);
   const [charactersModalOpen, setCharactersModalOpen] = useState(false);
-  const [selectedElement, setSelectedElement] = useState<{ kind: 'player'; id: string } | undefined>(undefined);
+  const [selectedElement, setSelectedElement] = useState<
+    { kind: 'player'; id: string } | undefined
+  >(undefined);
   return (
     <main className="relative flex h-screen flex-col items-center justify-between font-body game-background">
       <ReactModal
@@ -66,10 +67,12 @@ export default function Home() {
         contentLabel="Characters modal"
         ariaHideApp={false}
       >
-        <CharactersView onCharacterSelect={(characterId: string) => {
-          setSelectedElement({ kind: 'player', id: characterId });
-          setCharactersModalOpen(false);
-        }} />
+        <CharactersView
+          onCharacterSelect={(characterId: string) => {
+            setSelectedElement({ kind: 'player', id: characterId });
+            setCharactersModalOpen(false);
+          }}
+        />
       </ReactModal>
       {/*<div className="p-3 absolute top-0 right-0 z-10 text-2xl">
         <Authenticated>
@@ -101,7 +104,7 @@ export default function Home() {
             <div className="flex gap-4 flex-grow pointer-events-none">
               <FreezeButton />
               <MusicButton />
-              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={characterIcon}>
+              <Button onClick={() => setCharactersModalOpen(true)} imgUrl={starImg}>
                 Characters
               </Button>
               <Button href="https://github.com/a16z-infra/cozy-cafe" imgUrl={starImg}>
