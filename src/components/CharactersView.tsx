@@ -1,5 +1,7 @@
 import React from 'react';
 import { characters, Descriptions } from '../../data/characters';
+import { Stage } from '@pixi/react';
+import { Character } from './Character';
 
 export default function CharactersView({ onCharacterSelect }: { onCharacterSelect?: (characterId: string) => void }) {
   const validCharacters = characters.filter((char) => {
@@ -28,20 +30,28 @@ export default function CharactersView({ onCharacterSelect }: { onCharacterSelec
                 onClick={() => onCharacterSelect && onCharacterSelect(char.name)}
                 className="cursor-pointer border border-gray-300 rounded-lg p-4 flex flex-col items-center hover:shadow-lg transition-shadow"
               >
-                <div
-                  role="img"
-                  aria-label={`${displayName} sprite`}
-                  className="mb-2"
-                  style={{
-                    width: `${frame.w}px`,
-                    height: `${frame.h}px`,
-                    backgroundImage: `url(${char.textureUrl})`,
-                    backgroundPosition: `-${frame.x}px -${frame.y}px`,
-                    backgroundSize: char.spritesheetData.meta?.size
-                      ? `${char.spritesheetData.meta.size.w}px ${char.spritesheetData.meta.size.h}px`
-                      : 'contain',
-                  }}
-                />
+                {/* Get the first frame data. */}
+                const frameKeys = Object.keys(char.spritesheetData.frames);
+                const firstFrameKey = frameKeys[0];
+                const frame = char.spritesheetData.frames[firstFrameKey].frame;
+
+                <Stage
+                  width={frame.w}
+                  height={frame.h}
+                  options={{ backgroundAlpha: 0, backgroundColor: 0 }}
+                  style={{ pointerEvents: 'none' }}
+                >
+                  <Character
+                    textureUrl={char.textureUrl}
+                    spritesheetData={char.spritesheetData}
+                    // Center the sprite within the Stage.
+                    x={frame.w / 2}
+                    y={frame.h / 2}
+                    orientation={0} // You can adjust this if needed.
+                    isMoving={false}
+                    onClick={() => onCharacterSelect && onCharacterSelect(char.name)}
+                  />
+                </Stage>
                 <h3 className="font-bold text-lg">{displayName}</h3>
                 <p>{description?.identity || 'N/A'}</p>
                 {description?.plan && <p className="text-sm text-gray-500">{description.plan}</p>}
