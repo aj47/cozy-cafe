@@ -20,6 +20,7 @@ export default function Home() {
   const [selectedElement, setSelectedElement] = useState<
     { kind: 'player'; id: string } | undefined
   >(undefined);
+  const { joinOrLeaveGame } = useJoinOrLeaveGame();
   return (
     <main className="relative flex h-screen flex-col items-center justify-between font-body game-background">
       <ReactModal
@@ -70,7 +71,6 @@ export default function Home() {
       >
         <CharactersView
           onCharacterSelect={() => {
-            const { joinOrLeaveGame } = useJoinOrLeaveGame();
             joinOrLeaveGame();
             setCharactersModalOpen(false);
           }}
