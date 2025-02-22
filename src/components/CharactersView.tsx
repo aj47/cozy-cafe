@@ -3,19 +3,23 @@ import { characters, Descriptions } from '../../data/characters';
 import { Stage } from '@pixi/react';
 import { Character } from './Character';
 
-export default function CharactersView({ onCharacterSelect }: { onCharacterSelect?: (characterId: string) => void }) {
+export default function CharactersView({
+  onCharacterSelect,
+}: {
+  onCharacterSelect?: (characterId: string) => void;
+}) {
   const validCharacters = characters.filter((char) => {
     const description = Descriptions.find((desc) => desc.character === char.name);
     return Boolean(description && description.name);
   });
 
   return (
-    <div className="p-4">
+    <div className="p-4" style={{ zIndex: 99, pointerEvents: 'all' }}>
       <h2 className="text-2xl mb-4">Characters List</h2>
       <div className="overflow-y-auto max-h-[80vh]">
         <div className="grid grid-cols-1 gap-4">
           {validCharacters.map((char) => {
-            const description = Descriptions.find(desc => desc.character === char.name);
+            const description = Descriptions.find((desc) => desc.character === char.name);
             const displayName = description?.name || char.name;
 
             // Get the first frame key from the spritesheet data.
@@ -30,16 +34,11 @@ export default function CharactersView({ onCharacterSelect }: { onCharacterSelec
                 onClick={() => onCharacterSelect && onCharacterSelect(char.name)}
                 className="cursor-pointer border border-gray-300 rounded-lg p-4 flex flex-col items-center hover:shadow-lg transition-shadow"
               >
-                {/* Get the first frame data. */}
-                const frameKeys = Object.keys(char.spritesheetData.frames);
-                const firstFrameKey = frameKeys[0];
-                const frame = char.spritesheetData.frames[firstFrameKey].frame;
-
                 <Stage
                   width={frame.w}
                   height={frame.h}
                   options={{ backgroundAlpha: 0, backgroundColor: 0 }}
-                  style={{ pointerEvents: 'none' }}
+                  style={{ pointerEvents: 'none', scale: 10 }}
                 >
                   <Character
                     textureUrl={char.textureUrl}
@@ -52,9 +51,9 @@ export default function CharactersView({ onCharacterSelect }: { onCharacterSelec
                     onClick={() => onCharacterSelect && onCharacterSelect(char.name)}
                   />
                 </Stage>
+                {description?.plan && <p className="text-sm text-gray-500">{description.plan}</p>}
                 <h3 className="font-bold text-lg">{displayName}</h3>
                 <p>{description?.identity || 'N/A'}</p>
-                {description?.plan && <p className="text-sm text-gray-500">{description.plan}</p>}
               </div>
             );
           })}
