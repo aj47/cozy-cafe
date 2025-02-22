@@ -14,7 +14,7 @@ export default function CharactersView({
   });
 
   return (
-    <div className="p-4" style={{ zIndex: 99, pointerEvents: 'all' }}>
+    <div className="p-4" style={{ zIndex: 99, pointerEvents: 'all' }} onWheel={(e) => e.stopPropagation()}>
       <h2 className="text-2xl mb-4">Characters List</h2>
       <div className="overflow-y-auto max-h-[80vh]">
         <div className="grid grid-cols-1 gap-4">
