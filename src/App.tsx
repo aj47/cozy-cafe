@@ -1,16 +1,12 @@
 import Game from './components/Game.tsx';
 
 import { ToastContainer } from 'react-toastify';
-import starImg from '../assets/star.svg';
-import helpImg from '../assets/help.svg';
 // import { UserButton } from '@clerk/clerk-react';
 // import LoginButton from './components/buttons/LoginButton.tsx';
 import { useState } from 'react';
 import ReactModal from 'react-modal';
 import MusicButton from './components/buttons/MusicButton.tsx';
-import Button from './components/buttons/Button.tsx';
 import InteractButton from './components/buttons/InteractButton.tsx';
-import FreezeButton from './components/FreezeButton.tsx';
 import { MAX_HUMAN_PLAYERS } from '../convex/constants.ts';
 
 export default function Home() {
@@ -84,15 +80,10 @@ export default function Home() {
           <Game />
           <footer className="absolute justify-end bottom-0 left-0 w-full flex items-center gap-3 p-6 flex-wrap pointer-events-none">
             <div className="flex gap-4 flex-grow pointer-events-none">
-              <FreezeButton />
               <MusicButton />
-              <Button href="https://github.com/a16z-infra/cozy-cafe" imgUrl={starImg}>
-                Star
-              </Button>
-              <InteractButton />
-              <Button imgUrl={helpImg} onClick={() => setHelpModalOpen(true)}>
-                Help
-              </Button>
+              <InteractButton>
+                Create Agent
+              </InteractButton>
             </div>
           </footer>
           <ToastContainer position="bottom-right" autoClose={2000} closeOnClick theme="dark" />
