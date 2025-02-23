@@ -6,11 +6,16 @@ import { api } from '../../../convex/_generated/api';
 // import { SignInButton } from '@clerk/clerk-react';
 import { ConvexError } from 'convex/values';
 import { Id } from '../../../convex/_generated/dataModel';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import ReactModal from 'react-modal';
 import { waitForInput } from '../../hooks/sendInput';
 import { useServerGame } from '../../hooks/serverGame';
 
 export default function InteractButton() {
+  const [identityModalOpen, setIdentityModalOpen] = useState(false);
+  const [planModalOpen, setPlanModalOpen] = useState(false);
+  const [identityInput, setIdentityInput] = useState('');
+  const [planInput, setPlanInput] = useState('');
   // const { isAuthenticated } = useConvexAuth();
   const worldStatus = useQuery(api.world.defaultWorldStatus);
   const worldId = worldStatus?.worldId;
@@ -44,6 +49,24 @@ export default function InteractButton() {
     [convex],
   );
 
+  const handleIdentitySubmit = () => {
+    if (identityInput.trim()) {
+      setIdentityModalOpen(false);
+      setPlanModalOpen(true);
+    }
+  };
+
+  const handlePlanSubmit = () => {
+    if (planInput.trim()) {
+      setPlanModalOpen(false);
+      if (worldId) {
+        joinInput(worldId, 'Me', identityInput, planInput);
+      }
+      setIdentityInput('');
+      setPlanInput('');
+    }
+  };
+
   const joinOrLeaveGame = () => {
     if (
       !worldId ||
@@ -56,12 +79,7 @@ export default function InteractButton() {
       console.log(`Leaving game for player ${userPlayerId}`);
       void leave({ worldId });
     } else {
-      const identity = prompt('Enter your identity (describe who you are):');
-      const plan = prompt('Enter your plan (what do you want to achieve?):');
-      if (identity && plan) {
-        console.log(`Joining game as "Me"`);
-        joinInput(worldId, 'Me', identity, plan);
-      }
+      setIdentityModalOpen(true);
     }
   };
   // if (!isAuthenticated || game === undefined) {
@@ -72,8 +90,77 @@ export default function InteractButton() {
   //   );
   // }
   return (
-    <Button imgUrl={interactImg} onClick={joinOrLeaveGame}>
-      {isPlaying ? 'Leave' : 'Interact'}
-    </Button>
+    <>
+      <Button imgUrl={interactImg} onClick={joinOrLeaveGame}>
+        {isPlaying ? 'Leave' : 'Create Agent'}
+      </Button>
+
+      <ReactModal
+        isOpen={identityModalOpen}
+        onRequestClose={() => setIdentityModalOpen(false)}
+        style={modalStyles}
+        contentLabel="Identity modal"
+        ariaHideApp={false}
+      >
+        <div className="font-body">
+          <h2 className="text-4xl mb-4">Describe your agent</h2>
+          <input
+            type="text"
+            className="w-full p-2 mb-4 bg-clay-700 text-white"
+            placeholder="Who is this character?"
+            value={identityInput}
+            onChange={(e) => setIdentityInput(e.target.value)}
+          />
+          <div className="flex gap-4 justify-end">
+            <button className="button" onClick={() => setIdentityModalOpen(false)}>Cancel</button>
+            <button className="button bg-clay-700" onClick={handleIdentitySubmit}>Next</button>
+          </div>
+        </div>
+      </ReactModal>
+
+      <ReactModal
+        isOpen={planModalOpen}
+        onRequestClose={() => setPlanModalOpen(false)}
+        style={modalStyles}
+        contentLabel="Plan modal"
+        ariaHideApp={false}
+      >
+        <div className="font-body">
+          <h2 className="text-4xl mb-4">Set agent goals</h2>
+          <input
+            type="text"
+            className="w-full p-2 mb-4 bg-clay-700 text-white"
+            placeholder="What should they try to achieve?"
+            value={planInput}
+            onChange={(e) => setPlanInput(e.target.value)}
+          />
+          <div className="flex gap-4 justify-end">
+            <button className="button" onClick={() => setPlanModalOpen(false)}>Back</button>
+            <button className="button bg-clay-700" onClick={handlePlanSubmit}>Create</button>
+          </div>
+        </div>
+      </ReactModal>
+    </>
   );
 }
+
+const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgb(0, 0, 0, 75%)',
+    zIndex: 12,
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    maxWidth: '50%',
+    border: '10px solid rgb(23, 20, 33)',
+    borderRadius: '0',
+    background: 'rgb(35, 38, 58)',
+    color: 'white',
+    fontFamily: '"Upheaval Pro", "sans-serif"',
+  },
+};
