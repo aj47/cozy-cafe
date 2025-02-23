@@ -172,11 +172,15 @@ export function blockedWithPositions(position: Point, otherPositions: Point[], m
   if (isNaN(position.x) || isNaN(position.y)) {
     throw new Error(`NaN position in ${JSON.stringify(position)}`);
   }
-  if (position.x < 0 || position.y < 0 || position.x >= map.width || position.y >= map.height) {
+  if (position.x < 0 || position.y < 0 || position.x >= 18 || position.y >= map.height) {
     return 'out of bounds';
   }
 
-  let i = 0;
+  const layer = map.bgTiles[1];
+  if (layer[Math.floor(position.y)][Math.floor(position.x)] !== -1) {
+    return 'world blocked';
+  }
+
   for (const layer of map.objectTiles) {
     // if (position.x >= layer.length) {
     //   console.log('map width', map.width, 'map height', map.height);
@@ -199,7 +203,6 @@ export function blockedWithPositions(position: Point, otherPositions: Point[], m
     if (layer[Math.floor(position.y)][Math.floor(position.x)] !== -1) {
       return 'world blocked';
     }
-    i++;
   }
   for (const otherPosition of otherPositions) {
     if (distance(otherPosition, position) < COLLISION_THRESHOLD) {
