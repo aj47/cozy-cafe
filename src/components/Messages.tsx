@@ -58,6 +58,7 @@ export function Messages({
       scrollViewRef.current?.scrollTo({
         top: scrollViewRef.current.scrollHeight,
         behavior: 'smooth',
+        behavior: 'smooth',
       });
     }
   }, [messages, currentlyTyping]);
@@ -136,7 +137,7 @@ export function Messages({
   nodes.sort((a, b) => a.time - b.time);
   return (
     <div className="chats text-base sm:text-sm">
-      <div className="bg-brown-200 text-black p-2">
+      <div className="bg-brown-200 text-black p-2 max-h-96 overflow-y-auto" ref={scrollViewRef}>
         {nodes.length > 0 && nodes.map((n) => n.node)}
         {currentlyTyping && currentlyTyping.playerId !== humanPlayerId && (
           <div key="typing" className="leading-tight mb-6">
