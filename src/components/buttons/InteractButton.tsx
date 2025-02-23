@@ -56,12 +56,11 @@ export default function InteractButton() {
       console.log(`Leaving game for player ${userPlayerId}`);
       void leave({ worldId });
     } else {
-      const name = prompt('Enter your name:');
       const identity = prompt('Enter your identity (describe who you are):');
       const plan = prompt('Enter your plan (what do you want to achieve?):');
-      if (name && identity && plan) {
-        console.log(`Joining game as ${name}`);
-        joinInput(worldId, name, identity, plan);
+      if (identity && plan) {
+        console.log(`Joining game as "Me"`);
+        joinInput(worldId, 'Me', identity, plan);
       }
     }
   };

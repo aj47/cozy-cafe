@@ -120,8 +120,6 @@ export const joinWorld = mutation({
     // if (!identity) {
     //   throw new ConvexError(`Not logged in`);
     // }
-    // const name =
-    //   identity.givenName || identity.nickname || (identity.email && identity.email.split('@')[0]);
     const name = DEFAULT_NAME;
 
     // if (!name) {
@@ -143,9 +141,10 @@ export const joinWorld = mutation({
 
     return await insertInput(ctx, world._id, 'createAgent', {
       descriptionIndex: -1,
-      userName: args.userName,
+      userName: name,
       userIdentity: args.userIdentity,
       userPlan: args.userPlan,
+      tokenIdentifier: DEFAULT_NAME,
     });
   },
 });

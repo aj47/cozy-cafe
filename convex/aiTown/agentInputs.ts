@@ -122,6 +122,7 @@ export const agentInputs = {
       userName: v.optional(v.string()),
       userIdentity: v.optional(v.string()),
       userPlan: v.optional(v.string()),
+      tokenIdentifier: v.optional(v.string()),
     },
     handler: (game, now, args) => {
       let description;
@@ -146,6 +147,7 @@ export const agentInputs = {
         description.name,
         description.character,
         description.identity,
+        args.tokenIdentifier,
       );
       const agentId = game.allocId('agents');
       game.world.agents.set(
