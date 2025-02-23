@@ -2,8 +2,8 @@
 
 export const tilesetpath = '/ai-town/assets/cafe-2.png';
 export const tiledim = 32;
-export const screenxtiles = 45;
-export const screenytiles = 32;
+export const screenxtiles = 26;
+export const screenytiles = 20;
 export const tilesetpxw = 1440;
 export const tilesetpxh = 1024;
 
